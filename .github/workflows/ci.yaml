@@ -712,10 +712,10 @@ jobs:
           fetch-depth: 0  # Full history for secret scanning
 
       - name: Run TruffleHog Scan
-        uses: NVIDIA/dsx-github-actions/.github/actions/trufflehog-scan@55d1e0af17fb4431edaca19fbd5c78fecd29d18a
+        uses: NVIDIA/dsx-github-actions/.github/actions/trufflehog-scan@9a9ce3a7770a8b53d2726afa920be3276bc3ddd7
         with:
           extra-args: '--results=verified,unknown --only-verified'
-          post-pr-comment: 'false'
+          post-pr-comment: 'true'
           fail-on-findings: 'true'
 
   security-codeql-scan:
