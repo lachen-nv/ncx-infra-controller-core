@@ -2001,6 +2001,7 @@ dependencies = [
  "hyper",
  "hyper-util",
  "ipnetwork",
+ "logfmt",
  "netlink-packet-route",
  "nonzero_ext",
  "prost 0.14.1",
@@ -2008,7 +2009,9 @@ dependencies = [
  "tokio",
  "tonic 0.14.2",
  "tonic-prost",
+ "tower-http",
  "tracing",
+ "tracing-subscriber",
  "uuid",
 ]
 
