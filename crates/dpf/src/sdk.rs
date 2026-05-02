@@ -1855,8 +1855,8 @@ mod tests {
             dpu_bmc_ip: "10.0.0.10".to_string(),
             host_bmc_ip: "10.0.0.1".to_string(),
             serial_number: "SN123456".to_string(),
-            host_machine_id: "host-aaa".to_string(),
             dpu_machine_id: "dpu-bbb".to_string(),
+            is_primary: true,
         };
 
         sdk.register_dpu_device(info).await.unwrap();
@@ -1880,7 +1880,6 @@ mod tests {
             node_id: "host-001".to_string(),
             host_bmc_ip: "10.0.0.1".to_string(),
             device_ids: vec!["dpu-001".to_string(), "dpu-002".to_string()],
-            host_machine_id: "host-aaa".to_string(),
         };
 
         sdk.register_dpu_node(info).await.unwrap();
@@ -1906,8 +1905,8 @@ mod tests {
             dpu_bmc_ip: "10.0.0.10".to_string(),
             host_bmc_ip: "10.0.0.1".to_string(),
             serial_number: "SN123456".to_string(),
-            host_machine_id: "host-aaa".to_string(),
             dpu_machine_id: "dpu-bbb".to_string(),
+            is_primary: true,
         };
 
         sdk.register_dpu_device(info).await.unwrap();
@@ -1937,7 +1936,6 @@ mod tests {
             node_id: "host-001".to_string(),
             host_bmc_ip: "10.0.0.1".to_string(),
             device_ids: vec!["dpu-001".to_string()],
-            host_machine_id: "host-aaa".to_string(),
         };
 
         sdk.register_dpu_node(info).await.unwrap();
@@ -1963,10 +1961,6 @@ mod tests {
                 ("test/device".to_string(), "true".to_string()),
                 ("test/host-bmc-ip".to_string(), info.host_bmc_ip.clone()),
                 (
-                    "test/host-machine-id".to_string(),
-                    info.host_machine_id.clone(),
-                ),
-                (
                     "test/dpu-machine-id".to_string(),
                     info.dpu_machine_id.clone(),
                 ),
@@ -1977,11 +1971,8 @@ mod tests {
             BTreeMap::from([("test/node".to_string(), "true".to_string())])
         }
 
-        fn node_context_labels(&self, info: &DpuNodeInfo) -> BTreeMap<String, String> {
-            BTreeMap::from([(
-                "test/host-machine-id".to_string(),
-                info.host_machine_id.clone(),
-            )])
+        fn node_context_labels(&self, _info: &DpuNodeInfo) -> BTreeMap<String, String> {
+            BTreeMap::new()
         }
     }
 
@@ -1999,8 +1990,8 @@ mod tests {
             dpu_bmc_ip: "10.0.0.10".to_string(),
             host_bmc_ip: "10.0.0.1".to_string(),
             serial_number: "SN123456".to_string(),
-            host_machine_id: "host-aaa".to_string(),
             dpu_machine_id: "dpu-bbb".to_string(),
+            is_primary: true,
         };
 
         sdk.register_dpu_device(info).await.unwrap();
@@ -2015,10 +2006,6 @@ mod tests {
         assert_eq!(
             labels.get("test/host-bmc-ip"),
             Some(&"10.0.0.1".to_string())
-        );
-        assert_eq!(
-            labels.get("test/host-machine-id"),
-            Some(&"host-aaa".to_string())
         );
         assert_eq!(
             labels.get("test/dpu-machine-id"),
@@ -2039,8 +2026,8 @@ mod tests {
             dpu_bmc_ip: "10.0.0.10".to_string(),
             host_bmc_ip: "10.0.0.1".to_string(),
             serial_number: "SN123456".to_string(),
-            host_machine_id: "host-aaa".to_string(),
             dpu_machine_id: "dpu-bbb".to_string(),
+            is_primary: true,
         };
 
         sdk.register_dpu_device(info).await.unwrap();
@@ -2065,7 +2052,6 @@ mod tests {
             node_id: "host-001".to_string(),
             host_bmc_ip: "10.0.0.1".to_string(),
             device_ids: vec!["dpu-001".to_string()],
-            host_machine_id: "host-aaa".to_string(),
         };
 
         sdk.register_dpu_node(info).await.unwrap();
@@ -2077,11 +2063,6 @@ mod tests {
         let labels = node.metadata.labels.as_ref().unwrap();
 
         assert_eq!(labels.get("test/node"), Some(&"true".to_string()));
-        assert_eq!(
-            labels.get("test/host-machine-id"),
-            Some(&"host-aaa".to_string()),
-            "contextual label from node_context_labels should be merged"
-        );
     }
 
     #[tokio::test]
@@ -2096,7 +2077,6 @@ mod tests {
             node_id: "host-001".to_string(),
             host_bmc_ip: "10.0.0.1".to_string(),
             device_ids: vec!["dpu-001".to_string()],
-            host_machine_id: "host-aaa".to_string(),
         };
 
         sdk.register_dpu_node(info).await.unwrap();
@@ -2163,8 +2143,8 @@ mod tests {
             dpu_bmc_ip: "10.0.0.10".to_string(),
             host_bmc_ip: "10.0.0.1".to_string(),
             serial_number: "SN123".to_string(),
-            host_machine_id: "host-aaa".to_string(),
             dpu_machine_id: "dpu-bbb".to_string(),
+            is_primary: true,
         };
         sdk.register_dpu_device(device_info).await.unwrap();
 
@@ -2241,8 +2221,8 @@ mod tests {
             dpu_bmc_ip: "10.0.0.10".to_string(),
             host_bmc_ip: "10.0.0.1".to_string(),
             serial_number: "SN111".to_string(),
-            host_machine_id: "host-111".to_string(),
             dpu_machine_id: "dpu-111".to_string(),
+            is_primary: true,
         };
 
         let info2 = DpuDeviceInfo {
@@ -2250,8 +2230,8 @@ mod tests {
             dpu_bmc_ip: "10.0.0.20".to_string(),
             host_bmc_ip: "10.0.0.2".to_string(),
             serial_number: "SN222".to_string(),
-            host_machine_id: "host-222".to_string(),
             dpu_machine_id: "dpu-222".to_string(),
+            is_primary: false,
         };
 
         sdk1.register_dpu_device(info1).await.unwrap();
@@ -2432,8 +2412,8 @@ mod tests {
             dpu_bmc_ip: "10.0.0.10".to_string(),
             host_bmc_ip: "10.0.0.1".to_string(),
             serial_number: "SN123456".to_string(),
-            host_machine_id: "host-aaa".to_string(),
             dpu_machine_id: "dpu-bbb".to_string(),
+            is_primary: true,
         };
         let err = sdk.register_dpu_device(info).await.unwrap_err();
         assert!(
@@ -2477,8 +2457,8 @@ mod tests {
             dpu_bmc_ip: "10.0.0.10".to_string(),
             host_bmc_ip: "10.0.0.1".to_string(),
             serial_number: "SN123456".to_string(),
-            host_machine_id: "host-aaa".to_string(),
             dpu_machine_id: "dpu-bbb".to_string(),
+            is_primary: true,
         };
         sdk.register_dpu_device(info).await.unwrap();
     }
@@ -2515,7 +2495,6 @@ mod tests {
             node_id: "host-001".to_string(),
             host_bmc_ip: "10.0.0.1".to_string(),
             device_ids: vec!["dpu-001".to_string()],
-            host_machine_id: "host-aaa".to_string(),
         };
         let err = sdk.register_dpu_node(info).await.unwrap_err();
         assert!(
@@ -2555,7 +2534,6 @@ mod tests {
             node_id: "host-001".to_string(),
             host_bmc_ip: "10.0.0.1".to_string(),
             device_ids: vec!["dpu-001".to_string()],
-            host_machine_id: "host-aaa".to_string(),
         };
         sdk.register_dpu_node(info).await.unwrap();
     }
@@ -2717,7 +2695,6 @@ mod tests {
             node_id: "host-001".to_string(),
             host_bmc_ip: "10.0.0.1".to_string(),
             device_ids: vec!["dpu-001".to_string()],
-            host_machine_id: "host-aaa".to_string(),
         };
         sdk.register_dpu_node(info).await.unwrap();
 
